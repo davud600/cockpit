@@ -19,6 +19,7 @@ return {
 			formatters_by_ft = {
 				javascript = { "prettier" },
 				typescript = { "prettier" },
+				python = { "black" },
 				javascriptreact = { "prettier" },
 				typescriptreact = { "prettier" },
 				json = { "prettier" },
@@ -93,10 +94,25 @@ return {
 					require("lspconfig").ts_ls.setup({
 						capabilities = capabilities,
 						on_attach = function(client, bufnr)
-							-- Disable LSP formatting for tsserver so Prettier takes over
+							-- Disable LSP formatting for ts_ls so Prettier takes over
 							client.server_capabilities.documentFormattingProvider = false
 							client.server_capabilities.documentRangeFormattingProvider = false
 
+							-- Keybinding for manual formatting
+							vim.api.nvim_buf_set_keymap(
+								bufnr,
+								"n",
+								"<leader>f",
+								":lua require('conform').format()<CR>",
+								{ noremap = true, silent = true }
+							)
+						end,
+					})
+				end,
+				["pyright"] = function()
+					require("lspconfig").pyright.setup({
+						capabilities = capabilities,
+						on_attach = function(_, bufnr)
 							-- Keybinding for manual formatting
 							vim.api.nvim_buf_set_keymap(
 								bufnr,
