@@ -18,6 +18,19 @@ function ColorMyPencils(color)
 	-- vim.api.nvim_set_hl(0, "@type", { fg = "#e0aaff" })  -- Interface name (purple)
 	vim.api.nvim_set_hl(0, "@property", { fg = "#c4a7e7" }) -- Keys in objects
 	vim.api.nvim_set_hl(0, "@property.ts", { fg = "#c4a7e7" })
+	vim.api.nvim_set_hl(0, "Visual", { bg = "#212121" })
+	local TelescopeColor = {
+		TelescopeSelection = { bg = "#212121" },
+		TelescopePromptNormal = { bg = "#212121" },
+		TelescopeResultsNormal = { bg = "#000000" },
+		TelescopePreviewNormal = { bg = "#000000" },
+		TelescopePromptBorder = { bg = "#000000", fg = "#212121" },
+		TelescopeResultsBorder = { bg = "#000000", fg = "#212121" },
+		TelescopePreviewBorder = { bg = "#000000", fg = "#212121" },
+	}
+	for hl, col in pairs(TelescopeColor) do
+		vim.api.nvim_set_hl(0, hl, col)
+	end
 end
 
 return {
@@ -31,6 +44,11 @@ return {
 				styles = {
 					italic = false,
 					bold = false,
+				},
+				highlight_groups = {
+					Normal = { bg = "#000000" },
+					NormalNC = { bg = "#000000" },
+					CursorLine = { bg = "#121212" },
 				},
 			})
 
