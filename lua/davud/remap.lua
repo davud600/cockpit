@@ -21,6 +21,8 @@ vim.keymap.set("n", "<leader>svwm", function()
 	require("vim-with-me").StopVimWithMe()
 end)
 
+vim.keymap.set("i", "<C-BS>", "<C-o>db")
+
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
@@ -79,3 +81,11 @@ vim.keymap.set(
 
 vim.keymap.set("v", "<Tab>", ">gv", { noremap = true, silent = true }) -- Move right (indent)
 vim.keymap.set("v", "<S-Tab>", "<gv", { noremap = true, silent = true }) -- Move left (outdent)
+
+-- swap :sp with :vsplit
+vim.cmd("cabbrev <expr> sp (getcmdtype() == ':' && getcmdline() ==# 'sp') ? 'vsplit' : 'sp'")
+vim.cmd("cabbrev <expr> split (getcmdtype() == ':' && getcmdline() ==# 'split') ? 'vsplit' : 'split'")
+
+-- swap :vsp with :split
+vim.cmd("cabbrev <expr> vsp (getcmdtype() == ':' && getcmdline() ==# 'vsp') ? 'split' : 'vsp'")
+vim.cmd("cabbrev <expr> vsplit (getcmdtype() == ':' && getcmdline() ==# 'vsplit') ? 'split' : 'vsplit'")
