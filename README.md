@@ -1,3 +1,3 @@
-##my very awesome cockpit / kitchen / enchanting table.
+## my very awesome cockpit / kitchen / enchanting table.
 
-###this where i cook. i use arch btw 👨‍🍳👨‍🍳👨‍🍳👨‍🍳👨‍🍳👨‍🍳
+### this where i cook. i use arch btw 👨‍🍳👨‍🍳👨‍🍳👨‍🍳👨‍🍳👨‍🍳
