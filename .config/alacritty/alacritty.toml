@@ -1,0 +1,37 @@
+[env]
+TERM = "xterm-256color"
+
+[bell]
+command = "none"
+
+[colors.cursor]
+cursor = "0xe3e3e3"
+text = "0x000000"
+
+[colors.primary]
+background = "0x000000"
+foreground = "0xFFFFFF"
+
+[colors.selection]
+background = "0x444444"
+text = "0xFFFFFF"
+
+[font]
+size = 10.0
+
+[font.normal]
+family = "SFMono Nerd Font Mono"
+
+[mouse]
+hide_when_typing = true
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[window]
+opacity = 1.0
+
+[window.dimensions]
+columns = 80
+lines = 24
