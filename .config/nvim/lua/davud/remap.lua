@@ -1,27 +1,5 @@
-local function open_todays_log()
-	local date = os.date("%Y-%m-%d")
-	local filepath = "/home/davud/logs/" .. date .. ".txt"
-
-	local file = io.open(filepath, "r")
-	if not file then
-		file = io.open(filepath, "w")
-		if file then
-			file:write(date .. "\n\nDONE:\n\nIN-PROGRESS:\n\nBLOCKERS:\n\nNOTES:\n\n")
-			file:close()
-		else
-			print("Failed to create log file at: " .. filepath)
-			return
-		end
-	else
-		file:close()
-	end
-
-	vim.cmd("edit " .. filepath)
-end
-
 vim.g.mapleader = " "
 -- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-vim.keymap.set("n", "<leader>l", open_todays_log, { noremap = true, silent = true })
 vim.keymap.set("n", "<C-b>", vim.cmd.Ex)
 vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
 vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
