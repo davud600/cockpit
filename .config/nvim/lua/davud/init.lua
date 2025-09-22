@@ -1,6 +1,7 @@
 require("davud.set")
 require("davud.remap")
 require("davud.lazy_init")
+require("davud.logs")
 
 -- DO.not
 -- DO NOT INCLUDE THIS

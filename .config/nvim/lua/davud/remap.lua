@@ -9,6 +9,11 @@ vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagn
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 
+vim.keymap.set("n", "]q", ":cnext<CR>", { silent = true, desc = "Next quickfix item" })
+vim.keymap.set("n", "[q", ":cprev<CR>", { silent = true, desc = "Previous quickfix item" })
+vim.keymap.set("n", "]Q", ":clast<CR>", { silent = true, desc = "Last quickfix item" })
+vim.keymap.set("n", "[Q", ":cfirst<CR>", { silent = true, desc = "First quickfix item" })
+
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
