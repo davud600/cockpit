@@ -1,88 +1,67 @@
-vim.opt.guicursor = ""
-vim.opt.cursorline = false
+-- Set <space> as the leader key
+--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
-vim.opt.nu = true
-vim.opt.relativenumber = true
+-- don't change the holy cursor
+vim.o.guicursor = "n-v-c-i:block"
 
--- vim.opt.tabstop = 4
--- vim.opt.softtabstop = 4
--- vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+vim.g.have_nerd_font = true
 
-vim.opt.smartindent = true
+-- don't like it
+vim.o.cursorline = false
 
-vim.opt.wrap = false
+-- can't be a 10x without this...
+vim.o.relativenumber = true
+vim.o.number = true
 
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.opt.undofile = true
+-- Don't show the mode, since it's already in the status line
+vim.o.showmode = false
 
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
+-- Sync clipboard between OS and Neovim.
+--  Schedule the setting after `UiEnter` because it can increase startup-time.
+vim.schedule(function()
+	vim.o.clipboard = "unnamedplus"
+end)
 
+-- Enable break indent
+vim.o.breakindent = true
+
+-- Save undo history
+vim.o.undofile = true
+
+-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+vim.o.ignorecase = true
+vim.o.smartcase = true
+
+-- Keep signcolumn on by default
+vim.o.signcolumn = "yes"
+
+-- Decrease update time
+vim.o.updatetime = 250
+
+-- Decrease mapped sequence wait time
+vim.o.timeoutlen = 500
+
+-- Configure how new splits should be opened
+vim.o.splitright = true
+vim.o.splitbelow = true
+
+-- Sets how neovim will display certain whitespace characters in the editor.
+vim.o.list = true
+vim.opt.listchars = { tab = "  ", trail = "·", nbsp = "␣" }
+
+-- Preview substitutions live, as you type!
+vim.o.inccommand = "split"
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.o.scrolloff = 10
+
+-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
+-- instead raise a dialog asking if you wish to save the current file(s)
+vim.o.confirm = true
+
+-- true gui colors
 vim.opt.termguicolors = true
 
-vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
-vim.opt.isfname:append("@-@")
-
-vim.opt.updatetime = 50
-
--- Function to detect Prettier config
-local function get_prettier_tab_width()
-	local prettier_config_files = { ".prettierrc", ".prettierrc.json", ".prettierrc.js", "package.json" }
-	local cwd = vim.fn.getcwd()
-
-	for _, file in ipairs(prettier_config_files) do
-		local path = cwd .. "/" .. file
-		if vim.fn.filereadable(path) == 1 then
-			local config_content = vim.fn.readfile(path)
-			local config_string = table.concat(config_content, "\n")
-
-			local tab_width = config_string:match('"tabWidth"%s*:%s*(%d+)')
-			if tab_width then
-				return tonumber(tab_width)
-			end
-		end
-	end
-	return nil
-end
-
--- Function to update indentation dynamically
-local function update_indentation()
-	local tab_width = get_prettier_tab_width()
-
-	if tab_width then
-		vim.opt.tabstop = tab_width
-		vim.opt.shiftwidth = tab_width
-		vim.opt.softtabstop = tab_width
-	else
-		-- Use LSP settings as a fallback
-		local clients = vim.lsp.get_active_clients()
-		for _, client in ipairs(clients) do
-			if client.server_capabilities.documentFormattingProvider then
-				local settings = client.config.settings
-				if settings and settings.tabSize then
-					vim.opt.tabstop = settings.tabSize
-					vim.opt.shiftwidth = settings.tabSize
-					vim.opt.softtabstop = settings.tabSize
-					return
-				end
-			end
-		end
-
-		-- Default (4 spaces for general code)
-		vim.opt.tabstop = 4
-		vim.opt.shiftwidth = 4
-		vim.opt.softtabstop = 4
-	end
-end
-
--- Run on BufEnter and FileType change
-vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
-	callback = update_indentation,
-})
-
-vim.g.netrw_list_hide = [[\(^\|\s\s\)\zs\.\%(?!\.\./)\S\+/$]]
-vim.g.netrw_hide = 1
+vim.opt.wrap = false
