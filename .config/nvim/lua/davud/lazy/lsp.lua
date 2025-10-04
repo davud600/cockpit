@@ -17,6 +17,15 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "cpp", "h", "c" },
+	callback = function()
+		vim.bo.tabstop = 4
+		vim.bo.shiftwidth = 4
+		vim.bo.expandtab = true
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "md", "txt" },
 	callback = function()
 		vim.bo.tabstop = 2
@@ -148,37 +157,37 @@ return {
 					--    See `:help CursorHold` for information about when this is executed
 					--
 					-- When you move your cursor, the highlights will be cleared (the second autocommand).
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					if
-						client
-						and client_supports_method(
-							client,
-							vim.lsp.protocol.Methods.textDocument_documentHighlight,
-							event.buf
-						)
-					then
-						local highlight_augroup =
-							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
-						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-							buffer = event.buf,
-							group = highlight_augroup,
-							callback = vim.lsp.buf.document_highlight,
-						})
-
-						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-							buffer = event.buf,
-							group = highlight_augroup,
-							callback = vim.lsp.buf.clear_references,
-						})
-
-						vim.api.nvim_create_autocmd("LspDetach", {
-							group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-							callback = function(event2)
-								vim.lsp.buf.clear_references()
-								vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
-							end,
-						})
-					end
+					-- local client = vim.lsp.get_client_by_id(event.data.client_id)
+					-- if
+					-- 	client
+					-- 	and client_supports_method(
+					-- 		client,
+					-- 		vim.lsp.protocol.Methods.textDocument_documentHighlight,
+					-- 		event.buf
+					-- 	)
+					-- then
+					-- 	local highlight_augroup =
+					-- 		vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+					-- 	vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+					-- 		buffer = event.buf,
+					-- 		group = highlight_augroup,
+					-- 		callback = vim.lsp.buf.document_highlight,
+					-- 	})
+					--
+					-- 	vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+					-- 		buffer = event.buf,
+					-- 		group = highlight_augroup,
+					-- 		callback = vim.lsp.buf.clear_references,
+					-- 	})
+					--
+					-- 	vim.api.nvim_create_autocmd("LspDetach", {
+					-- 		group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+					-- 		callback = function(event2)
+					-- 			vim.lsp.buf.clear_references()
+					-- 			vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+					-- 		end,
+					-- 	})
+					-- end
 				end,
 			})
 
@@ -217,9 +226,6 @@ return {
 			--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-			-- Enable the following language servers
-			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-			--
 			--  Add any additional override configuration in the following tables. Available keys are:
 			--  - cmd (table): Override the default command used to start the server
 			--  - filetypes (table): Override the default list of associated filetypes for the server
@@ -256,8 +262,6 @@ return {
 				},
 			}
 
-			-- Ensure the servers and tools above are installed
-			--
 			-- To check the current status of installed tools and/or manually install
 			-- other tools, you can run
 			--    :Mason
@@ -312,30 +316,32 @@ return {
 				-- Disable "format_on_save lsp_fallback" for languages that don't
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true }
+				local disable_filetypes = {}
 				if disable_filetypes[vim.bo[bufnr].filetype] then
 					return nil
 				else
 					return {
-						timeout_ms = 500,
+						timeout_ms = 1000,
 						lsp_format = "fallback",
 					}
 				end
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- Conform can also run multiple formatters sequentially
 				python = { "black", "isort" },
-				javascript = { "prettierd", "prettier" },
-				typescript = { "prettierd", "prettier" },
-				javascriptreact = { "prettierd", "prettier" },
-				typescriptreact = { "prettierd", "prettier" },
-				json = { "prettierd", "prettier" },
-				yaml = { "prettierd", "prettier" },
-				markdown = { "prettierd", "prettier" },
-				html = { "prettierd", "prettier" },
-				css = { "prettierd", "prettier" },
-				scss = { "prettierd", "prettier" },
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				javascriptreact = { "prettier" },
+				typescriptreact = { "prettier" },
+				json = { "prettier" },
+				yaml = { "prettier" },
+				markdown = { "prettier" },
+				html = { "prettier" },
+				css = { "prettier" },
+				scss = { "prettier" },
+				c = { "clang_format" },
+				cpp = { "clang_format" },
+				h = { "clang_format" },
 			},
 		},
 	},

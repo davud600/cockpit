@@ -53,3 +53,5 @@ export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:
 
 # .dotfiles
 alias cockpit='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+export PATH="$PATH:$(go env GOPATH)/bin"
