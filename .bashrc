@@ -1,18 +1,24 @@
-#
-# ~/.bashrc
-#
-
-export PATH="$HOME/.local/bin:$PATH"
-export TERM=tmux-256color
-export TERMINFO=$HOME/.terminfo
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
+
+# cockpit - .dotfiles
+# alias cockpit='/usr/bin/git --git-dir=$HOME/cockpit/ --work-tree=$HOME'
+alias cockpit='/usr/bin/git --git-dir=$HOME/cockpit/'
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
-export PATH="$PATH:/home/davud/.npm-global/bin"
+
+export PATH="$HOME/.local/bin:$PATH"
+export TERM=tmux-256color
+export TERMINFO=$HOME/.terminfo
+export EDITOR=nvim
+export VISUAL=nvim
+
+# node
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -20,38 +26,24 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-
+# fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
+export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border'
 
-# Created by `pipx` on 2025-05-09 15:56:41
-export PATH="$PATH:/home/davud/.local/bin"
-export PATH=$PATH:/home/davud/.local/bin
+# nvim alias
+vim() {
+    nvim .
+}
 
-# Android sdk
-export ANDROID_HOME="/opt/android-sdk"
-export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
-
-# # >>> conda initialize >>>
-# # !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('/home/davud/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/home/davud/miniconda3/etc/profile.d/conda.sh" ]; then
-#         . "/home/davud/miniconda3/etc/profile.d/conda.sh"
-#     else
-#         export PATH="/home/davud/miniconda3/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# # <<< conda initialize <<<
-
-# tmux
-# if [ -z "$TMUX" ] && [ -z "$SSH_TTY" ]; then
-#    tmux attach-session -t default || tmux new-session -s default
-# fi
-
-# .dotfiles
-alias cockpit='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-export PATH="$PATH:$(go env GOPATH)/bin"
+y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    yazi "$@" --cwd-file="$tmp"
+    if [ -f "$tmp" ]; then
+        local dir="$(cat "$tmp")"
+        rm -f "$tmp"
+        [ -d "$dir" ] && cd "$dir"
+    fi
+}

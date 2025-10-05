@@ -1,0 +1,13 @@
+[mgr]
+show_hidden = true
+
+[opener]
+# Open in a NEW tmux split, starting from the current pane's dir
+nvim-pane = [
+  { run = "tmux split-window -h -c '#{pane_current_path}' -- bash -lc 'nvim \"$@\"'", orphan = true, desc = "Open in new tmux split with nvim" }
+]
+
+# Send to an EXISTING tmux pane set in $NVIM_PANE
+nvim-send = [
+  { run = "bash -lc '[ -n \"$NVIM_PANE\" ] && tmux send-keys -t \"$NVIM_PANE\" \"nvim \\\"$@\\\"\" Enter'", orphan = true, desc = "Send to existing tmux pane" }
+]

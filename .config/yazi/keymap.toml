@@ -1,0 +1,20 @@
+# Press E to open in a new tmux split (nvim)
+[[keymap]]
+on  = "E"
+run = "open --with nvim-pane"
+desc = "Open in new tmux split (nvim)"
+
+# Press S to send to an existing pane ($NVIM_PANE)
+[[keymap]]
+on  = "S"
+run = "open --with nvim-send"
+desc = "Send open to $NVIM_PANE"
+
+[mgr]
+prepend_keymap = [
+  { on = "d", run = "create --dir", desc = "Create directory" },
+  { on = "%", run = "create", desc = "Create file" },
+  { on = "x", run = "yank --cut", desc = "Cut selected" },
+  { on = "V", run = "visual_mode", desc = "Visual select mode" },
+  { on = "R", run = "rename", desc = "Rename file or direcotry" }
+]
