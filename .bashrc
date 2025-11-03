@@ -10,6 +10,7 @@ alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$PATH:/home/davud/bin"
 export TERM=tmux-256color
 export TERMINFO=$HOME/.terminfo
 export EDITOR=nvim
